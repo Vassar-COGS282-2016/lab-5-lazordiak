@@ -33,8 +33,32 @@
 
 sample.training.data <- data.frame(x=c(0.5,0.6), y=c(0.4,0.3), category=c(1,2))
 
+row.number <- max(rownames(sample.training.data))
+
+sample.training.data$weight <- 0.7^(as.numeric(row.number)-as.numeric(rownames(sample.training.data)))
+
+td$distance <- mapply(function(x,y){
+  return(sqrt( (x-x.val)^2 + (y-y.val)^2 ))
+}, td$x, td$y)
+
 exemplar.memory.limited <- function(training.data, x.val, y.val, target.category, sensitivity, decay.rate){
-  return(NA)
+  
+  td <- training.data
+  
+  row.number <- max(rownames(td))
+  td$weight <- decay.rate^(as.numeric(row.number)-as.numeric(rownames(td)))
+  
+  td$distance <- mapply(function(x,y){
+    return(sqrt( (x-x.val)^2 + (y-y.val)^2 ))
+  }, td$x, td$y)
+  
+  td$similarity <- exp(-sensitivity*td$distance)
+  
+  td$memsim <- td$similarity*td$weight
+  
+  pr.correct <- sum(subset(td, category==target.category)$memsim) / sum(td$memsim)
+  
+  return(pr.correct)
 }
 
 # Once you have the model implemented, write the log-likelihood function for a set of data.
