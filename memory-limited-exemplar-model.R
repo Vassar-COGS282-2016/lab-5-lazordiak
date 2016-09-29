@@ -84,5 +84,23 @@ sample.data.set[4,]
 # Don't forget that decay rate should be between 0 and 1, and that sensitivity should be > 0.
 
 exemplar.memory.log.likelihood <- function(all.data, sensitivity, decay.rate){
+
+  for(i in 1:row.count){
+    
+    train <- all.data[0:i-1,]
+    test <- all.data[i,]
+    
+    if(i==1){
+     all.data$prob <- 0.5 
+    }
+    else{  
+    all.data$prob <- exemplar.memory.limited(all.data,all.data$x,all.data$y,all.data$category,
+                                             sensitivity,decay.rate)
+    if(all.data$prob==0){
+     all.data$prob <- 0.00000000001 
+    }
+    }
+  }
+}
   return(NA)
 }
