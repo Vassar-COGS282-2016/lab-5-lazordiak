@@ -85,6 +85,11 @@ sample.data.set[4,]
 
 exemplar.memory.log.likelihood <- function(all.data, sensitivity, decay.rate){
 
+  all.data <- read.csv('experiment-data.csv')
+  sensitivity <- params[1]
+  decay.rate <- params[2]
+  
+  
   for(i in 1:row.count){
     
     train <- all.data[0:i-1,]
@@ -101,6 +106,14 @@ exemplar.memory.log.likelihood <- function(all.data, sensitivity, decay.rate){
     }
     }
   }
+  all.data$likelihood <- mapply(function(x,y){
+    if(x==TRUE) {
+      return(y)
+    }
+    else {
+      return(1-y)
+    }
+  },all.data$correct.response,gcm.practice.data$gcm.probability.correct)
 }
   return(NA)
 }
