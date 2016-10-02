@@ -58,7 +58,11 @@ exemplar.memory.limited <- function(training.data, x.val, y.val, target.category
   
   pr.correct <- sum(subset(td, category==target.category)$memsim) / sum(td$memsim)
   
-  return(pr.correct)
+  if(pr.correct==0){
+    return(0.00000000001)
+  } else {
+    return(pr.correct)
+  }
 }
 
 # Once you have the model implemented, write the log-likelihood function for a set of data.
@@ -84,13 +88,8 @@ sample.data.set[4,]
 # Don't forget that decay rate should be between 0 and 1, and that sensitivity should be > 0.
 
 exemplar.memory.log.likelihood <- function(all.data, sensitivity, decay.rate){
-
-  all.data <- read.csv('experiment-data.csv')
-  sensitivity <- params[1]
-  decay.rate <- params[2]
   
-  
-  for(i in 1:row.count){
+  for(i in 1:nrow(all.data)){
     
     train <- all.data[0:i-1,]
     test <- all.data[i,]
@@ -101,19 +100,24 @@ exemplar.memory.log.likelihood <- function(all.data, sensitivity, decay.rate){
     else{  
     all.data$prob <- exemplar.memory.limited(all.data,all.data$x,all.data$y,all.data$category,
                                              sensitivity,decay.rate)
-    if(all.data$prob==0){
-     all.data$prob <- 0.00000000001 
-    }
     }
   }
-  all.data$likelihood <- mapply(function(x,y){
-    if(x==TRUE) {
-      return(y)
-    }
-    else {
-      return(1-y)
-    }
-  },all.data$correct.response,gcm.practice.data$gcm.probability.correct)
+  
+  all.data$likelihood <- mapply(likelihood.function(),
+                                all.data$correct,all.data$prob)
+  
+  return(-sum(log(all.data$likelihood)))
 }
-  return(NA)
+
+
+likelihood.function <- function(x,y){
+  if(x==TRUE) {
+    return(y)
+  }
+  else {
+    return(1-y)
+  }
 }
+
+#,all.data$correct.response,gcm.practice.data$gcm.probability.correct)
+
