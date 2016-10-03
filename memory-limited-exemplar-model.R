@@ -91,7 +91,7 @@ exemplar.memory.log.likelihood <- function(all.data, sensitivity, decay.rate){
   
   for(i in 1:nrow(all.data)){
     
-    train <- all.data[0:i-1,]
+    train <- all.data[0:(i-1),]
     test <- all.data[i,]
     
     if(i==1){
