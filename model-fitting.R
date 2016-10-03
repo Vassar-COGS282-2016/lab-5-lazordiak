@@ -20,15 +20,36 @@ optim.results <- optim(c(0.5,0.5),exemplar.wrapper,method="Nelder-Mead",control=
 # The brent method also requires an upper and lower boundary:
 # optim( ..., upper=100, lower=0, method="Brent")
 
+exemplar.wrapper.decay <- function(params){
+  return(exemplar.memory.log.likelihood(all.data,params[1],1))
+}
+
+optim.decay.results <- optim(c(0.5),exemplar.wrapper.decay,
+                             upper=100,lower=0,method="Brent")
+
 # What's the log likelihood of both models? (see the $value in the result of optiom(),
 # remember this is the negative log likeihood, so multiply by -1.
 
+#regular examplar: -251.1787
+
+#fixed decay exemplar: -251.7536
+
 # What's the AIC and BIC for both models? Which model should we prefer?
 
-first.aic <- (2*2) - (2*log(10610.31))
+first.aic <- (2*2) - (2*log())
 print(first.aic)
 
-for.bic <- 
+n <- as.numeric(max(rownames(all.data)))
+first.bic <- ((-2)*log(10610.31)) + (2*log(n))
+print(first.bic)
+
+second.aic <- 2 - (2*log(10610.31))
+print(second.aic)
+
+second.bic <- ((-2)*log(10610.31)) + (log(n))
+print(second.bic)
+
+#Mine gets an x error
 
 #### BONUS...
 # If you complete this part I'll refund you a late day. You do not need to do this.
