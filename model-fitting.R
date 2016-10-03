@@ -12,7 +12,7 @@ exemplar.wrapper <- function(params){
   return(exemplar.memory.log.likelihood(all.data,params[1],params[2]))
 }
 
-optim.results <- optim(c(1,1),exemplar.wrapper,method="Nelder-Mead",control=list(trace=4))
+optim.results <- optim(c(0.5,0.5),exemplar.wrapper,method="Nelder-Mead",control=list(trace=4))
 
 # Now try fitting a restricted version of the model, where we assume there is no decay.
 # Fix the decay.rate parameter to 1, and use optim to fit the sensitivity parameter.
@@ -24,6 +24,11 @@ optim.results <- optim(c(1,1),exemplar.wrapper,method="Nelder-Mead",control=list
 # remember this is the negative log likeihood, so multiply by -1.
 
 # What's the AIC and BIC for both models? Which model should we prefer?
+
+first.aic <- (2*2) - (2*log(10610.31))
+print(first.aic)
+
+for.bic <- 
 
 #### BONUS...
 # If you complete this part I'll refund you a late day. You do not need to do this.
