@@ -9,7 +9,7 @@ rm(sample.training.data)
 # optim( ... , control=list(trace=4))
 
 exemplar.wrapper <- function(params){
-  exemplar.memory.log.likelihood(all.data,params[1],params[2])
+  return(exemplar.memory.log.likelihood(all.data,params[1],params[2]))
 }
 
 optim.results <- optim(c(1,1),exemplar.wrapper,method="Nelder-Mead")
