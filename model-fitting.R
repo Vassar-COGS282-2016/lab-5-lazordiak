@@ -36,20 +36,20 @@ optim.decay.results <- optim(c(0.5),exemplar.wrapper.decay,
 
 # What's the AIC and BIC for both models? Which model should we prefer?
 
-first.aic <- (2*2) - (2*log())
+first.aic <- (2*2) - (2*log(251.1787))
 print(first.aic)
 
 n <- as.numeric(max(rownames(all.data)))
-first.bic <- ((-2)*log(10610.31)) + (2*log(n))
+first.bic <- ((-2)*log(251.1787)) + (2*log(n))
 print(first.bic)
 
-second.aic <- 2 - (2*log(10610.31))
+second.aic <- 2 - (2*log(251.7536))
 print(second.aic)
 
-second.bic <- ((-2)*log(10610.31)) + (log(n))
+second.bic <- ((-2)*log(251.7536)) + (log(n))
 print(second.bic)
 
-#Mine gets an x error
+# The first model does a better job.
 
 #### BONUS...
 # If you complete this part I'll refund you a late day. You do not need to do this.
